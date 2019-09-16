@@ -135,36 +135,41 @@ class MapsForm extends Component {
     removePlace(placeInputId, removeInput);
   };
 
-  buildInputs = addressSteps =>
-    addressSteps.map(adr => (
-      <Flex
-        alignItems="center"
-        key={`adr_children_${adr.id}`}
-        order={adr.stepNum}
-      >
-        <Flex flex={7}>
-          <Field
-            key={`adr_${adr.id}`}
-            id={adr.id}
-            name={`adr_${adr.id}`}
-            component={AutoCompleteInput}
-            formError={this.state.formError}
-            initialValue={adr.initialValue}
-            onPlaceComplete={this.onPlaceComplete}
-            onPlaceRemove={this.onPlaceRemove}
-            type="text"
-            required={adr.required}
-            stepNum={adr.stepNum}
-            placeholder={this.getInputPlaceholder(adr.stepNum)}
-          />
-        </Flex>
-        {!adr.required && (
-          <Flex flex={1} mt={2}>
-            <Close fontSize={25} onClick={() => this.removeStep(adr.id)} />
+  buildInputs = addressSteps => {
+    const { places } = this.props;
+    return addressSteps.map(adr => {
+      const matchPlace = places.find(({inputId: pInputId}) => pInputId === adr.id);
+      return (
+          <Flex
+              alignItems="center"
+              key={`adr_children_${adr.id}`}
+              order={adr.stepNum}
+          >
+            <Flex flex={7}>
+              <Field
+                  key={`adr_${adr.id}`}
+                  id={adr.id}
+                  name={`adr_${adr.id}`}
+                  component={AutoCompleteInput}
+                  formError={this.state.formError}
+                  initialValue={matchPlace && matchPlace.address}
+                  onPlaceComplete={this.onPlaceComplete}
+                  onPlaceRemove={this.onPlaceRemove}
+                  type="text"
+                  required={adr.required}
+                  stepNum={adr.stepNum}
+                  placeholder={this.getInputPlaceholder(adr.stepNum)}
+              />
+            </Flex>
+            {!adr.required && (
+                <Flex flex={1} mt={2}>
+                  <Close fontSize={25} onClick={() => this.removeStep(adr.id)}/>
+                </Flex>
+            )}
           </Flex>
-        )}
-      </Flex>
-    ));
+      );
+    });
+  };
 
   getInputPlaceholder(stepNum) {
     switch (stepNum) {
