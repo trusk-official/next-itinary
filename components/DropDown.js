@@ -5,21 +5,21 @@ export default class DropDown extends Component {
   static propTypes = {
     listItineraries: PropTypes.array,
     onChange: PropTypes.func,
-    pickItinaryId: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
+    pickItineraryId: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
   };
 
   // Defaults for props
   static defaultProps = {
     listItineraries: [],
-    pickItinaryId: 'default'
+    pickItineraryId: 'default'
   };
 
   render() {
-    const { listItineraries, onChange, pickItinaryId } = this.props;
+    const { listItineraries, onChange, pickItineraryId } = this.props;
 
     return (
       <select
-        id="itinarySelect"
+        id="itinerarySelect"
         onChange={e => {
           const selectedItemIndex = listItineraries.findIndex(
             it => it.id === parseInt(e.target.value)
@@ -27,7 +27,7 @@ export default class DropDown extends Component {
           onChange &&
             onChange(selectedItemIndex, listItineraries[selectedItemIndex]);
         }}
-        value={pickItinaryId}
+        value={pickItineraryId}
       >
         {[
           <option key="default_option" value="default">
@@ -36,7 +36,7 @@ export default class DropDown extends Component {
         ].concat(
           listItineraries.map((item, itemIndex) => {
             return (
-              <option key={`itemItinary_${itemIndex}`} value={item.id}>
+              <option key={`itemItinerary_${itemIndex}`} value={item.id}>
                 {item.label}
               </option>
             );

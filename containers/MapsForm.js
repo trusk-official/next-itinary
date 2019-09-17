@@ -40,14 +40,14 @@ import {
   getFetchingOptimize,
   initForm,
   isFormValid,
-  optimizeItinary,
+  optimizeItinerary,
   removePlace,
   updatePlacesOrder,
-  addItinaryRequest,
-  deleteItinaryRequest,
-  updateItinaryRequest,
-  fetchItinaryRequest,
-  fetchItinaryMapRequest,
+  addItineraryRequest,
+  deleteItineraryRequest,
+  updateItineraryRequest,
+  fetchItineraryRequest,
+  fetchItineraryMapRequest,
   getPlaces,
   getItineraries,
   resetForm
@@ -58,43 +58,43 @@ const REQUIRED_FIELDS_COUNT = 2;
 class MapsForm extends Component {
   state = {
     formError: undefined,
-    itinaryName: '',
-    pickItinaryId: 'default',
-    pickItinaryIndex: null,
-    pickItinary: null,
+    itineraryName: '',
+    pickItineraryId: 'default',
+    pickItineraryIndex: null,
+    pickItinerary: null,
     isEdited: false
   };
 
   attemptOptimize = false;
-  hasInitUrlItinary = false;
+  hasInitUrlItinerary = false;
 
   componentWillMount() {
-    const { initialAddresses, initForm, fetchItinaryRequest } = this.props;
+    const { initialAddresses, initForm, fetchItineraryRequest } = this.props;
     initForm(initialAddresses, REQUIRED_FIELDS_COUNT);
-    fetchItinaryRequest();
+    fetchItineraryRequest();
   }
 
   componentWillReceiveProps({ itineraries, fetchingOptimize }) {
-    const { initialItinary, fetchItinaryMapRequest } = this.props;
+    const { initialItinerary, fetchItineraryMapRequest } = this.props;
     if (this.attemptOptimize && !fetchingOptimize) {
       this.props.reset();
       this.attemptOptimize = false;
     }
     let foundItem = itineraries.find(function(element) {
       let objFound;
-      if (element.id == initialItinary) {
+      if (element.id == initialItinerary) {
         objFound = element;
       }
       return objFound;
     });
-    if (foundItem && !this.hasInitUrlItinary) {
-      this.hasInitUrlItinary = true;
-      fetchItinaryMapRequest(foundItem);
-      this.setState({ isEdited: true, itinaryName: foundItem.label });
+    if (foundItem && !this.hasInitUrlItinerary) {
+      this.hasInitUrlItinerary = true;
+      fetchItineraryMapRequest(foundItem);
+      this.setState({ isEdited: true, itineraryName: foundItem.label });
     }
   }
 
-  addItinaryStep = () => {
+  addItineraryStep = () => {
     const { addAddressStep, isFormValid } = this.props;
 
     if (!isFormValid) {
@@ -182,12 +182,12 @@ class MapsForm extends Component {
     }
   }
 
-  optimizeItinary = () => {
-    const { isFormValid, formValues, optimizeItinary } = this.props;
+  optimizeItinerary = () => {
+    const { isFormValid, formValues, optimizeItinerary } = this.props;
 
     if (!isFormValid) {
       this.setState({
-        formError: 'You must fill all fields before optimize your itinary.'
+        formError: 'You must fill all fields before optimize your itinerary.'
       });
     } else if (Object.keys(formValues).length <= 3) {
       this.setState({
@@ -196,7 +196,7 @@ class MapsForm extends Component {
     } else {
       this.attemptOptimize = true;
       this.removeFormErrors();
-      optimizeItinary(REQUIRED_FIELDS_COUNT);
+      optimizeItinerary(REQUIRED_FIELDS_COUNT);
     }
   };
 
@@ -209,14 +209,14 @@ class MapsForm extends Component {
     this.setState({ formError: undefined });
   };
 
-  saveItinary = () => {
-    const { addItinaryRequest, places } = this.props;
-    const { itinaryName } = this.state;
-    if (places.length >= 2 && itinaryName) {
-      addItinaryRequest(places, itinaryName);
+  saveItinerary = () => {
+    const { addItineraryRequest, places } = this.props;
+    const { itineraryName } = this.state;
+    if (places.length >= 2 && itineraryName) {
+      addItineraryRequest(places, itineraryName);
       this.setState({
         isEdited: true,
-        isNewItinary: false,
+        isNewItinerary: false,
         formError: undefined
       });
     } else {
@@ -224,66 +224,66 @@ class MapsForm extends Component {
     }
   };
 
-  deleteItinary = () => {
-    const { deleteItinaryRequest } = this.props;
-    const { pickItinaryId, pickItinaryIndex } = this.state;
-    deleteItinaryRequest(pickItinaryId, pickItinaryIndex);
+  deleteItinerary = () => {
+    const { deleteItineraryRequest } = this.props;
+    const { pickItineraryId, pickItineraryIndex } = this.state;
+    deleteItineraryRequest(pickItineraryId, pickItineraryIndex);
     this.setState({
-      pickItinary: null,
-      itinaryName: null,
-      pickItinaryIndex: null,
+      pickItinerary: null,
+      itineraryName: null,
+      pickItineraryIndex: null,
       isEdited: false,
-      isNewItinary: false
+      isNewItinerary: false
     });
   };
 
-  updateItinary = () => {
-    const { updateItinaryRequest, places } = this.props;
-    const { pickItinaryId, pickItinaryIndex, itinaryName } = this.state;
+  updateItinerary = () => {
+    const { updateItineraryRequest, places } = this.props;
+    const { pickItineraryId, pickItineraryIndex, itineraryName } = this.state;
     let placesArray = [];
     places.map(place => {
       placesArray.push(place.id);
     });
-    const updateData = { label: itinaryName, place_ids: placesArray };
-    updateItinaryRequest(pickItinaryId, updateData, pickItinaryIndex);
+    const updateData = { label: itineraryName, place_ids: placesArray };
+    updateItineraryRequest(pickItineraryId, updateData, pickItineraryIndex);
     this.setState({ formError: undefined });
   };
 
-  isEditedItinary = () => {
+  isEditedItinerary = () => {
     const { isEdited } = this.state;
-    this.setState({ isEdited: !isEdited, isNewItinary: false });
+    this.setState({ isEdited: !isEdited, isNewItinerary: false });
     this.props.addressSteps;
   };
 
-  handleNameNewItinary = itinaryName => {
-    this.setState({ itinaryName });
+  handleNameNewItinerary = itineraryName => {
+    this.setState({ itineraryName });
   };
 
   handleChangeDropDown = (index, obj) => {
-    const { fetchItinaryMapRequest, resetForm } = this.props;
+    const { fetchItineraryMapRequest, resetForm } = this.props;
     resetForm();
     this.setState({
-      pickItinaryId: obj && obj.id,
-      pickItinaryIndex: index,
-      pickItinary: obj,
-      itinaryName: obj && obj.label,
+      pickItineraryId: obj && obj.id,
+      pickItineraryIndex: index,
+      pickItinerary: obj,
+      itineraryName: obj && obj.label,
       isEdited: false,
-      isNewItinary: false,
+      isNewItinerary: false,
       formError: undefined
     });
     if (obj) {
-      fetchItinaryMapRequest(obj);
+      fetchItineraryMapRequest(obj);
     }
   };
 
-  isNewItinary = () => {
+  isNewItinerary = () => {
     const { resetForm, reset } = this.props;
     this.setState({
-      isNewItinary: true,
+      isNewItinerary: true,
       isEdited: false,
-      itinaryName: '',
-      pickItinaryIndex: null,
-      pickItinary: null,
+      itineraryName: '',
+      pickItineraryIndex: null,
+      pickItinerary: null,
       formError: undefined
     });
     reset();
@@ -302,11 +302,11 @@ class MapsForm extends Component {
     } = this.props;
     const {
       formError,
-      itinaryName,
-      pickItinaryId,
+      itineraryName,
+      pickItineraryId,
       isEdited,
-      pickItinary,
-      isNewItinary
+      pickItinerary,
+      isNewItinerary
     } = this.state;
     return (
       <Fragment>
@@ -318,7 +318,7 @@ class MapsForm extends Component {
             p={20}
             textAlign={'center'}
           >
-            React / Redux itinary :
+            React / Redux itinerary :
           </Heading>
           <Container>
             {fetchingInit || fetchingOptimize ? (
@@ -333,24 +333,24 @@ class MapsForm extends Component {
                 <DropDown
                   onChange={this.handleChangeDropDown}
                   listItineraries={itineraries}
-                  pickItinaryId={pickItinaryId}
+                  pickItineraryId={pickItineraryId}
                 />
                 <Flex mt={2}>
                   <ButtonWithCustomStyles
                     bg={Colors.primary}
                     width={1 / 2}
-                    onClick={this.isNewItinary}
+                    onClick={this.isNewItinerary}
                   >
-                    <Text>New Itinary</Text>
+                    <Text>New Itinerary</Text>
                   </ButtonWithCustomStyles>
                 </Flex>
-                {(pickItinary || isEdited) && (
+                {(pickItinerary || isEdited) && (
                   <Fragment>
                     <Subhead mt={2}>
                       <ButtonWithCustomStyles
                         bg={Colors.primary}
                         width={1 / 2}
-                        onClick={this.isEditedItinary}
+                        onClick={this.isEditedItinerary}
                       >
                         <Text>Editer</Text>
                       </ButtonWithCustomStyles>
@@ -359,17 +359,17 @@ class MapsForm extends Component {
                       <ButtonWithCustomStyles
                         bg={Colors.primary}
                         width={1 / 2}
-                        onClick={this.deleteItinary}
+                        onClick={this.deleteItinerary}
                       >
                         <Text>Supprimer</Text>
                       </ButtonWithCustomStyles>
                     </Subhead>
                   </Fragment>
                 )}
-                {(isEdited || isNewItinary) && (
+                {(isEdited || isNewItinerary) && (
                   <Fragment>
                     <Subhead mt={4} fontSize={3} mb={15}>
-                      Your itinary :
+                      Your itinerary :
                     </Subhead>
                     <Subhead mb={15}>
                       <Text color={Colors.secondary} fontSize={1}>
@@ -382,14 +382,14 @@ class MapsForm extends Component {
                         id="1"
                         isValid={true}
                         input={{
-                          onChange: this.handleNameNewItinary,
-                          value: itinaryName
+                          onChange: this.handleNameNewItinerary,
+                          value: itineraryName
                         }}
                         meta={{}}
-                        placeholder="Itinary name"
+                        placeholder="Itinerary name"
                         required={false}
-                        saveButton={isEdited ? false : this.saveItinary}
-                        onSave={this.saveItinary}
+                        saveButton={isEdited ? false : this.saveItinerary}
+                        onSave={this.saveItinerary}
                         isEdited={isEdited}
                       />
                     </Flex>
@@ -415,7 +415,7 @@ class MapsForm extends Component {
                           <ButtonOutlineWithCustomStyles
                             color="#8BC34A"
                             width={1 / 2}
-                            onClick={this.updateItinary}
+                            onClick={this.updateItinerary}
                           >
                             <Text>Save</Text>
                           </ButtonOutlineWithCustomStyles>
@@ -428,14 +428,14 @@ class MapsForm extends Component {
                         <ButtonOutlineWithCustomStyles
                           color={Colors.primary}
                           width={1 / 2}
-                          onClick={this.addItinaryStep}
+                          onClick={this.addItineraryStep}
                         >
                           <Text>Add step</Text>
                         </ButtonOutlineWithCustomStyles>
                         <ButtonWithCustomStyles
                           bg={Colors.primary}
                           width={1 / 2}
-                          onClick={this.optimizeItinary}
+                          onClick={this.optimizeItinerary}
                         >
                           <Text>Optimize</Text>
                         </ButtonWithCustomStyles>
@@ -448,7 +448,7 @@ class MapsForm extends Component {
                   <Text color={Colors.secondary} fontSize={1}>
                     See the Github repository{' '}
                     <a
-                      href="https://github.com/nbdn/next-redux-itinary"
+                      href="https://github.com/nbdn/next-redux-itinerary"
                       rel="noopener noreferrer"
                       target="_blank"
                     >
@@ -478,20 +478,20 @@ MapsForm.propTypes = {
   initForm: PropTypes.func,
   initFormError: PropTypes.string,
   isFormValid: PropTypes.bool,
-  optimizeItinary: PropTypes.func,
+  optimizeItinerary: PropTypes.func,
   optimizedFormError: PropTypes.string,
   removePlace: PropTypes.func,
   reset: PropTypes.func,
   updatePlacesOrder: PropTypes.func,
-  addItinaryRequest: PropTypes.func,
-  deleteItinaryRequest: PropTypes.func,
-  updateItinaryRequest: PropTypes.func,
-  fetchItinaryRequest: PropTypes.func,
-  fetchItinaryMapRequest: PropTypes.func,
+  addItineraryRequest: PropTypes.func,
+  deleteItineraryRequest: PropTypes.func,
+  updateItineraryRequest: PropTypes.func,
+  fetchItineraryRequest: PropTypes.func,
+  fetchItineraryMapRequest: PropTypes.func,
   places: PropTypes.array,
   itineraries: PropTypes.array,
   resetForm: PropTypes.func,
-  initialItinary: PropTypes.string
+  initialItinerary: PropTypes.string
 };
 
 MapsForm.defaultProps = {
@@ -517,14 +517,14 @@ const mapDispatchToProps = {
   addAddressStep,
   addPlace,
   initForm,
-  optimizeItinary,
+  optimizeItinerary,
   removePlace,
   updatePlacesOrder,
-  addItinaryRequest,
-  deleteItinaryRequest,
-  updateItinaryRequest,
-  fetchItinaryRequest,
-  fetchItinaryMapRequest,
+  addItineraryRequest,
+  deleteItineraryRequest,
+  updateItineraryRequest,
+  fetchItineraryRequest,
+  fetchItineraryMapRequest,
   resetForm
 };
 

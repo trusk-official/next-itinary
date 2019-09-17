@@ -15,7 +15,7 @@ import './styles/MapsStyles';
 class Maps extends Component {
   state = {
     addresses: [],
-    itinary: null
+    itinerary: null
   };
 
   componentDidCatch(error) {
@@ -25,12 +25,12 @@ class Maps extends Component {
   }
 
   componentWillMount() {
-    const { url: { query: { addresses, itinary } } } = this.props;
+    const { url: { query: { addresses, itinerary } } } = this.props;
     if (addresses && typeof addresses === 'string') {
       this.setState({ addresses: addresses.split(',') });
     }
-    if (itinary && typeof itinary === 'string') {
-      this.setState({ itinary });
+    if (itinerary && typeof itinerary === 'string') {
+      this.setState({ itinerary });
     }
   }
 
@@ -39,14 +39,14 @@ class Maps extends Component {
   };
 
   render() {
-    const { addresses, itinary } = this.state;
+    const { addresses, itinerary } = this.state;
     return (
       <Fragment>
         <GoogleScriptProvider>
           <Flex>
             <MapsForm
               initialAddresses={addresses}
-              initialItinary={itinary}
+              initialItinerary={itinerary}
               onSubmit={this.showResults}
             />
             <MapsContainer />
@@ -59,7 +59,7 @@ class Maps extends Component {
 
 Maps.propTypes = {
   url: PropTypes.object,
-  initialItinary: PropTypes.string
+  initialItinerary: PropTypes.string
 };
 
 export default Maps;

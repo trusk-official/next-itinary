@@ -28,7 +28,7 @@ import {
 
 import { parseGooglePlace } from '../helpers/';
 import PlacesService from '../services/Places';
-import ItinariesService from '../services/Itinaries';
+import ItinerariesService from '../services/Itineraries';
 
 function* fetchInitForm({ placesId = [], requiredFieldsCount = 2 }) {
   try {
@@ -54,7 +54,7 @@ function* fetchInitForm({ placesId = [], requiredFieldsCount = 2 }) {
   }
 }
 
-function* fetchOptimizeItinary({
+function* fetchOptimizeItinerary({
   places = [],
   orderedPlacesIds = [],
   requiredFieldsCount = 2
@@ -66,7 +66,7 @@ function* fetchOptimizeItinary({
       );
     }
     const { error, response } = yield call(
-      PlacesService.optimizeItinary,
+      PlacesService.optimizeItinerary,
       orderedPlacesIds
     );
     if (response) {
@@ -103,32 +103,32 @@ function* fetchOptimizeItinary({
     }
   } catch (e) {
     /* eslint-disable no-console */
-    console.error('=> Err optimizing itinary', e);
+    console.error('=> Err optimizing itinerary', e);
     /* eslint-enable */
     yield put({ type: FETCH_OPTIMIZE_ITINARY_FAILED, message: e.message });
   }
 }
 
-function* addItinary({ places, itinaryName }) {
+function* addItinerary({ places, itineraryName }) {
   try {
     let placesArray = [];
     places.map(place => {
       placesArray.push(place.id);
     });
     const data = {
-      label: itinaryName,
+      label: itineraryName,
       place_ids: placesArray
     };
     const { error, response } = yield call(
-      ItinariesService.createItinaries,
+      ItinerariesService.createItineraries,
       data
     );
 
     if (response) {
-      const itinary = response[0];
+      const itinerary = response[0];
       yield put({
         type: ADD_ITINARY_SUCCESS,
-        itinary
+        itinerary
       });
     } else if (error) {
       yield put({
@@ -145,17 +145,17 @@ function* addItinary({ places, itinaryName }) {
   }
 }
 
-function* deleteItinary({ itinaryId, pickItinaryIndex }) {
+function* deleteItinerary({ itineraryId, pickItineraryIndex }) {
   try {
     const { error, response } = yield call(
-      ItinariesService.deleteItinaries,
-      itinaryId
+      ItinerariesService.deleteItineraries,
+      itineraryId
     );
 
     if (response) {
       yield put({
         type: DELETE_ITINARY_SUCCESS,
-        pickItinaryIndex
+        pickItineraryIndex
       });
     } else if (error) {
       yield put({
@@ -172,20 +172,20 @@ function* deleteItinary({ itinaryId, pickItinaryIndex }) {
   }
 }
 
-function* updateItinary({ pickItinaryId, updateData, pickItinaryIndex }) {
+function* updateItinerary({ pickItineraryId, updateData, pickItineraryIndex }) {
   try {
     const { error, response } = yield call(
-      ItinariesService.updateItinaries,
-      pickItinaryId,
+      ItinerariesService.updateItineraries,
+      pickItineraryId,
       updateData
     );
 
     if (response) {
-      const itinaryUpdate = response[0];
+      const itineraryUpdate = response[0];
       yield put({
         type: UPDATE_ITINARY_SUCCESS,
-        itinaryUpdate,
-        pickItinaryIndex
+        itineraryUpdate,
+        pickItineraryIndex
       });
     } else if (error) {
       yield put({
@@ -202,9 +202,9 @@ function* updateItinary({ pickItinaryId, updateData, pickItinaryIndex }) {
   }
 }
 
-function* fetchItinary() {
+function* fetchItinerary() {
   try {
-    const { error, response } = yield call(ItinariesService.getAllItinaries);
+    const { error, response } = yield call(ItinerariesService.getAllItineraries);
 
     if (response) {
       const itineraries = response.itineraries;
@@ -227,12 +227,12 @@ function* fetchItinary() {
   }
 }
 
-function* fetchItinaryForMap({ itinary }) {
+function* fetchItineraryForMap({ itinerary }) {
   try {
-    //const test =  buildAddressInputs(itinary.place_ids)
+    //const test =  buildAddressInputs(itinerary.place_ids)
     const { addressSteps, addressStepsOrders, places } = yield call(
       buildAddressInputs,
-      itinary.place_ids
+      itinerary.place_ids
     );
 
     yield put({
@@ -296,12 +296,12 @@ function* buildAddressInputs(placesId, requiredFieldsCount = 2) {
 
 function* mapsSaga() {
   yield takeLatest(FETCH_INIT_FORM, fetchInitForm);
-  yield takeLatest(FETCH_OPTIMIZE_ITINARY, fetchOptimizeItinary);
-  yield takeLatest(ADD_ITINARY_REQUEST, addItinary);
-  yield takeLatest(DELETE_ITINARY_REQUEST, deleteItinary);
-  yield takeLatest(UPDATE_ITINARY_REQUEST, updateItinary);
-  yield takeLatest(FETCH_ITINARY_REQUEST, fetchItinary);
-  yield takeLatest(FETCH_ITINARY_MAP_REQUEST, fetchItinaryForMap);
+  yield takeLatest(FETCH_OPTIMIZE_ITINARY, fetchOptimizeItinerary);
+  yield takeLatest(ADD_ITINARY_REQUEST, addItinerary);
+  yield takeLatest(DELETE_ITINARY_REQUEST, deleteItinerary);
+  yield takeLatest(UPDATE_ITINARY_REQUEST, updateItinerary);
+  yield takeLatest(FETCH_ITINARY_REQUEST, fetchItinerary);
+  yield takeLatest(FETCH_ITINARY_MAP_REQUEST, fetchItineraryForMap);
 }
 
 export default mapsSaga;

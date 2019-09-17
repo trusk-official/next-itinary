@@ -10,7 +10,7 @@ const knex = require('knex')({
   client: 'pg',
   version: '7.2',
   connection: {
-    host: 'next-redux-itinary_postgres-db_1',
+    host: 'postgres-db',
     user: 'postgres',
     database: 'itinerary'
   }
@@ -19,7 +19,7 @@ const knex = require('knex')({
 const dev = process.env.NODE_ENV !== 'production';
 const n = next({ dev });
 const handle = n.getRequestHandler();
-const API_ROUTES = ['/itinary/optimize', '/itineraries'];
+const API_ROUTES = ['/itinerary/optimize', '/itineraries'];
 
 n.prepare().then(async () => {
   if (!process.env.GOOGLE_API_KEY) {
@@ -43,9 +43,9 @@ n.prepare().then(async () => {
     }
   });
 
-  router.get('/itinary/optimize/', optimizeItinary);
+  router.get('/itinerary/optimize/', optimizeItinerary);
   router.get('/itineraries', getItineraries);
-  router.get('/itinaries/:id', getItinerary);
+  router.get('/itineraries/:id', getItinerary);
   router.post('/itinerary', createItinerary);
   router.del('/itinerary/:id', removeItinerary);
   router.put('/itinerary/:id', updateItinerary);
@@ -62,14 +62,14 @@ n.prepare().then(async () => {
   app.listen(process.env.PORT || 3000);
 });
 
-// Optimize itinary route :
+// Optimize itinerary route :
 
 const buildOptimizeUrl = (start, end, waypoints) =>
   `https://maps.googleapis.com/maps/api/directions/json?origin=place_id:${start}&destination=place_id:${end}&waypoints=optimize:true|place_id:${waypoints.join(
     '|place_id:'
   )}&key=${process.env.GOOGLE_API_KEY}`;
 
-const fetchOptimizedItinary = (start, end, placesIds) =>
+const fetchOptimizedItinerary = (start, end, placesIds) =>
   new Promise((resolve, reject) => {
     const googleUrl = buildOptimizeUrl(start, end, placesIds);
 
@@ -83,7 +83,7 @@ const fetchOptimizedItinary = (start, end, placesIds) =>
     });
   });
 
-async function optimizeItinary(ctx) {
+async function optimizeItinerary(ctx) {
   if (
     ctx.query.placesIds &&
     ctx.query.placesIds.length &&
@@ -94,7 +94,7 @@ async function optimizeItinary(ctx) {
     const end = placesIds.shift();
 
     try {
-      const optimizedOrder = await fetchOptimizedItinary(start, end, placesIds);
+      const optimizedOrder = await fetchOptimizedItinerary(start, end, placesIds);
       const optimizedPlacesIds = [];
 
       optimizedOrder.forEach(o => {
@@ -108,7 +108,7 @@ async function optimizeItinary(ctx) {
       };
     } catch (e) {
       /* eslint-disable no-console */
-      console.error('=> Error optimizing itinary', e);
+      console.error('=> Error optimizing itinerary', e);
       /* eslint-enable */
 
       ctx.body = e;

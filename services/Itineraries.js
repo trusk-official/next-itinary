@@ -1,5 +1,5 @@
-const ItinariesService = {
-  getAllItinaries: async () => {
+const ItinerariesService = {
+  getAllItineraries: async () => {
     const headerInit = {
       headers: {
         Accept: 'application/json',
@@ -17,10 +17,10 @@ const ItinariesService = {
       return { error, ok: false };
     }
   },
-  updateItinaries: async (pickItinaryId, updateData) => {
+  updateItineraries: async (pickItineraryId, updateData) => {
     try {
       const response = await fetch(
-        `http://127.0.0.1:3000/itinerary/${pickItinaryId}`,
+        `http://127.0.0.1:3000/itinerary/${pickItineraryId}`,
         {
           method: 'PUT',
           headers: new Headers({
@@ -35,10 +35,10 @@ const ItinariesService = {
       return { error, ok: false };
     }
   },
-  deleteItinaries: async itinaryId => {
+  deleteItineraries: async itineraryId => {
     try {
       const response = await fetch(
-        `http://127.0.0.1:3000/itinerary/${itinaryId}`,
+        `http://127.0.0.1:3000/itinerary/${itineraryId}`,
         {
           method: 'DELETE'
         }
@@ -49,7 +49,7 @@ const ItinariesService = {
       return { error, ok: false };
     }
   },
-  createItinaries: async data => {
+  createItineraries: async data => {
     try {
       const response = await fetch('http://127.0.0.1:3000/itinerary/', {
         method: 'POST',
@@ -66,4 +66,4 @@ const ItinariesService = {
   }
 };
 
-export default ItinariesService;
+export default ItinerariesService;

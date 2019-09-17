@@ -15,9 +15,9 @@ const PlacesService = {
     });
   },
 
-  optimizeItinary: orderedPlacesIds => {
+  optimizeItinerary: orderedPlacesIds => {
     return new Promise(resolve => {
-      fetch(`./itinary/optimize?placesIds=${orderedPlacesIds.join(',')}`)
+      fetch(`./itinerary/optimize?placesIds=${orderedPlacesIds.join(',')}`)
         .then(res => res.json())
         .then(resJson => {
           try {

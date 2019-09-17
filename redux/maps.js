@@ -109,16 +109,16 @@ function reducer(state = initialMapsState, action) {
     case ADD_ITINARY_SUCCESS:
       return state.merge({
         fetching: false,
-        itineraries: [...state.itineraries, action.itinary]
+        itineraries: [...state.itineraries, action.itinerary]
       });
     case ADD_ITINARY_FAILED:
       return state.merge({ fetching: false, addError: action.message });
     case DELETE_ITINARY_REQUEST:
       return state.merge({ fetching: true, deleteError: undefined });
     case DELETE_ITINARY_SUCCESS: {
-      let itinaryDelete = state.itineraries.asMutable();
-      itinaryDelete.splice(action.pickItinaryIndex, 1);
-      return state.merge({ fetching: false, itineraries: itinaryDelete });
+      let itineraryDelete = state.itineraries.asMutable();
+      itineraryDelete.splice(action.pickItineraryIndex, 1);
+      return state.merge({ fetching: false, itineraries: itineraryDelete });
     }
     case DELETE_ITINARY_FAILED:
       return state.merge({ fetching: false, deleteError: action.message });
@@ -126,7 +126,7 @@ function reducer(state = initialMapsState, action) {
       return state.merge({ fetching: true, updateError: undefined });
     case UPDATE_ITINARY_SUCCESS: {
       let itinerariesUpdate = state.itineraries.asMutable();
-      itinerariesUpdate[action.pickItinaryIndex] = action.itinaryUpdate;
+      itinerariesUpdate[action.pickItineraryIndex] = action.itineraryUpdate;
       return state.merge({ fetching: false, itineraries: itinerariesUpdate });
     }
     case UPDATE_ITINARY_FAILED:
@@ -216,7 +216,7 @@ export const updatePlacesOrder = (
 export const initForm = (placesId = [], requiredFieldsCount) => dispatch =>
   dispatch({ type: FETCH_INIT_FORM, placesId, requiredFieldsCount });
 
-export const optimizeItinary = requiredFieldsCount => (dispatch, getState) => {
+export const optimizeItinerary = requiredFieldsCount => (dispatch, getState) => {
   const places = getPlaces(getState());
   const orderedPlacesIds = getOrderedPlacesIds(getState());
   dispatch({
@@ -227,70 +227,70 @@ export const optimizeItinary = requiredFieldsCount => (dispatch, getState) => {
   });
 };
 
-export const addItinaryRequest = (places, itinaryName) => dispatch => {
-  dispatch({ type: ADD_ITINARY_REQUEST, places, itinaryName });
+export const addItineraryRequest = (places, itineraryName) => dispatch => {
+  dispatch({ type: ADD_ITINARY_REQUEST, places, itineraryName });
 };
 
-export const addItinarySuccess = itinary => dispatch =>
-  dispatch({ type: ADD_ITINARY_SUCCESS, itinary });
+export const addItinerarySuccess = itinerary => dispatch =>
+  dispatch({ type: ADD_ITINARY_SUCCESS, itinerary });
 
-export const addItinaryFailed = (placeInputId, removeInput) => dispatch =>
+export const addItineraryFailed = (placeInputId, removeInput) => dispatch =>
   dispatch({ type: ADD_ITINARY_FAILED, placeInputId, removeInput });
 
-export const deleteItinaryRequest = (
-  itinaryId,
-  pickItinaryIndex
+export const deleteItineraryRequest = (
+  itineraryId,
+  pickItineraryIndex
 ) => dispatch => {
   dispatch({
     type: DELETE_ITINARY_REQUEST,
-    itinaryId,
-    pickItinaryIndex
+    itineraryId,
+    pickItineraryIndex
   });
 };
 
-export const deleteItinarySuccess = place => dispatch =>
+export const deleteItinerarySuccess = place => dispatch =>
   dispatch({ type: DELETE_ITINARY_SUCCESS, place });
 
-export const deleteItinaryFailed = (placeInputId, removeInput) => dispatch =>
+export const deleteItineraryFailed = (placeInputId, removeInput) => dispatch =>
   dispatch({ type: DELETE_ITINARY_FAILED, placeInputId, removeInput });
 
-export const updateItinaryRequest = (
-  pickItinaryId,
+export const updateItineraryRequest = (
+  pickItineraryId,
   updateData,
-  pickItinaryIndex
+  pickItineraryIndex
 ) => dispatch => {
   dispatch({
     type: UPDATE_ITINARY_REQUEST,
-    pickItinaryId,
+    pickItineraryId,
     updateData,
-    pickItinaryIndex
+    pickItineraryIndex
   });
 };
 
-export const updateItinarySuccess = (
-  itinaryUpdate,
-  pickItinaryIndex
+export const updateItinerarySuccess = (
+  itineraryUpdate,
+  pickItineraryIndex
 ) => dispatch =>
-  dispatch({ type: UPDATE_ITINARY_SUCCESS, itinaryUpdate, pickItinaryIndex });
+  dispatch({ type: UPDATE_ITINARY_SUCCESS, itineraryUpdate, pickItineraryIndex });
 
-export const updateItinaryFailed = (placeInputId, removeInput) => dispatch =>
+export const updateItineraryFailed = (placeInputId, removeInput) => dispatch =>
   dispatch({ type: UPDATE_ITINARY_FAILED, placeInputId, removeInput });
 
-export const fetchItinaryRequest = (places, itinaryName) => dispatch => {
-  dispatch({ type: FETCH_ITINARY_REQUEST, places, itinaryName });
+export const fetchItineraryRequest = (places, itineraryName) => dispatch => {
+  dispatch({ type: FETCH_ITINARY_REQUEST, places, itineraryName });
 };
 
-export const fetchItinarySuccess = place => dispatch =>
+export const fetchItinerarySuccess = place => dispatch =>
   dispatch({ type: FETCH_ITINARY_SUCCESS, place });
 
-export const fetchItinaryFailed = (placeInputId, removeInput) => dispatch =>
+export const fetchItineraryFailed = (placeInputId, removeInput) => dispatch =>
   dispatch({ type: FETCH_ITINARY_FAILED, placeInputId, removeInput });
 
-export const fetchItinaryMapRequest = itinary => dispatch => {
-  dispatch({ type: FETCH_ITINARY_MAP_REQUEST, itinary });
+export const fetchItineraryMapRequest = itinerary => dispatch => {
+  dispatch({ type: FETCH_ITINARY_MAP_REQUEST, itinerary });
 };
 
-export const fetchItinaryMapSuccess = (
+export const fetchItineraryMapSuccess = (
   addressSteps,
   addressStepsOrders,
   places
@@ -302,7 +302,7 @@ export const fetchItinaryMapSuccess = (
     places
   });
 
-export const fetchItinaryMapFailed = (placeInputId, removeInput) => dispatch =>
+export const fetchItineraryMapFailed = (placeInputId, removeInput) => dispatch =>
   dispatch({ type: FETCH_ITINARY_MAP_FAILED, placeInputId, removeInput });
 
 export const resetForm = () => dispatch => {

@@ -1,6 +1,6 @@
-# Next Redux Itinary
+# Next Redux Itinerary
 
-_An itinary app with dragging inputs reorder & optimize itinary features._
+_An itinerary app with dragging inputs reorder & optimize itinerary features._
 
 This project is built with :
 
@@ -21,9 +21,9 @@ This project is built with :
 
 ## Demo
 
-You can see the live demo of the itinary app on [Heroku](https://next-redux-itinary.herokuapp.com/).
+You can see the live demo of the itinerary app on [Heroku](https://next-redux-itinerary.herokuapp.com/).
 
-You can customize the itinary by filling the form, or by adding Google place ids to the url with the following format:
+You can customize the itinerary by filling the form, or by adding Google place ids to the url with the following format:
 
 ```
 ?addresses=ChIJN7ithv1x5kcRBEKOU44bvMk,ChIJ3e-
@@ -44,32 +44,42 @@ uwuFv5kcRamCUXhoPOhI,ChIJd8y5Qzlu5kcRijTUmkvheew,ChIJ270fenJu5kcRV2qNT7_VbF0
 
 Just run : `npm run test`
 
+## Launch with docker-compose
+
+```sh
+docker-compose up --build -d
+```
+### Troubleshoot
+- permission denied: `sudo chown $USER:$USER -R postgres-db`
+
 ## Connect to postgres (psql):
 
 ```
-docker run -it --rm  --network nextreduxitinary_default --name pg postgres psql -h postgres-db -p 5432 -U postgres postgres
+docker run -it --rm  --network next-itinerary_default --name pg postgres psql -h postgres-db -p 5432 -U postgres postgres
 ```
+### Troubleshoot
+- default network naming may vary with different docker-compose versions, use `docker network list` to find the right network
 
-### Create your database `itinary`
+### Create your database `itinerary`
 
 ```
-CREATE DATABASE itinary;
+CREATE DATABASE itinerary;
 ```
 
 ### Connect to it
 
 ```
-\connect itinary
+\connect itinerary
 ```
 
-The postgres instance should be accessible inside the itinary app with its container address:
+The postgres instance should be accessible inside the itinerary app with its container address:
 
 ```
 # PostgresSQL
 POSTGRES_USER=postgres
 POSTGRES_PASSWORD=password
 POSTGRES_URL=postgres-db
-POSTGRES_DB=itinary
+POSTGRES_DB=itinerary
 ```
 
 ## Ways to improve
