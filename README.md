@@ -1,3 +1,22 @@
+# Sujet
+
+Ce projet est constitué d'un service back, un front et une base de donnée.  
+Il est actuellement déployé selon un process manuel simple:
+
+  - 1) ssh sur l'infra
+  - 2) pull de la branche master
+  - 3) `docker-compose up` pour build les images sur le serveur de production et up.
+
+La conf nginx est actuellement gérée à la main et n'est pas dockerisé.  
+Les DNS sont actuellement gérés à la main.  
+
+### Livrable:
+
+Décrivez la spécification complète du set up de ce projet pour un déploiement automatisé sur GCP, pour s'assurer qu'il scale, qu'il puisse être mis à jour sans down time, en précisant l'ensemble des process et outils et technos utilisés pour s'assurer de sa santé, du backup des données, du monitoring, de la sécurité.  
+Par specification on entends les deadlines, les livrables, les outils/process/technos/APIs GCP utilisés et comment ils sont configurés, et doit pouvoir servir de support à la réalisation dans les temps du projet avec des critères de sécurité et qualité acceptable.
+
+Durée: 1h
+
 # Next Redux Itinerary
 
 _An itinerary app with dragging inputs reorder & optimize itinerary features._
